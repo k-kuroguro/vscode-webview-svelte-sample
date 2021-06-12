@@ -1,0 +1,16 @@
+{
+   "compilerOptions": {
+      "types": [
+         "svelte",
+         "vscode-webview"
+      ],
+      "target": "es6",
+      "moduleResolution": "node"
+   },
+   "include": [
+      "./**/*"
+   ],
+   "exclude": [
+      "../../node_modules/*"
+   ]
+}
