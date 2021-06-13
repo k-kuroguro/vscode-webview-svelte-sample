@@ -66,9 +66,9 @@ const webview = {
             },
          },
          {
-            test: /\.css$/i,
+            test: /\.(css|s[ac]ss)$/i,
             exclude: /node_modules/,
-            use: [miniCssExtractPlugin.loader, 'css-loader'],
+            use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
          },
          {
             test: /\.ts$/,
