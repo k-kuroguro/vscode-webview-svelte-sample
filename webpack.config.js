@@ -9,11 +9,11 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const { typescript, scss } = require('svelte-preprocess');
 
 //TODO: recursively read
-//TODO: check exists *.html template and *.ts file
-const templates = fs.readdirSync(path.resolve(__dirname, 'src', 'webview', 'templates'), { withFileTypes: true }).filter(elem => elem.isFile);
+const templates = fs.readdirSync(path.resolve(__dirname, 'src', 'webview', 'templates'), { withFileTypes: true }).filter(elem => elem.isFile && path.extname(elem.name) === '.html');
 const entry = {}, htmlPlugins = [];
 for (const template of templates) {
    const basename = path.basename(template.name, path.extname(template.name));
+   if (!fs.existsSync(path.resolve(__dirname, 'src', 'webview', `${basename}.ts`))) continue;
    entry[basename] = `./${path.join('src', 'webview', `${basename}.ts`)}`;
    htmlPlugins.push(new htmlWebpackPlugin({
       title: '',
