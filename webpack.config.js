@@ -9,17 +9,19 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const { typescript, scss } = require('svelte-preprocess');
 
 //TODO: recursively read
-const templates = fs.readdirSync(path.resolve(__dirname, 'src', 'webview', 'templates'), { withFileTypes: true }).filter(elem => elem.isFile && path.extname(elem.name) === '.html');
+const templateExts = ['.html', '.ejs'];
+const templates = fs.readdirSync(path.resolve(__dirname, 'src', 'webview', 'templates'), { withFileTypes: true }).filter(elem => elem.isFile && templateExts.includes(path.extname(elem.name)));
 const entry = {}, htmlPlugins = [];
 for (const template of templates) {
-   const basename = path.basename(template.name, path.extname(template.name));
+   const extname = path.extname(template.name);
+   const basename = path.basename(template.name, extname);
    if (!fs.existsSync(path.resolve(__dirname, 'src', 'webview', `${basename}.ts`))) continue;
    entry[basename] = `./${path.join('src', 'webview', `${basename}.ts`)}`;
    htmlPlugins.push(new htmlWebpackPlugin({
       title: '',
       filename: `${basename}.html`,
       chunks: [basename],
-      template: `!!html-loader!${path.join(__dirname, 'src', 'webview', 'templates', `${basename}.html`)}`,
+      template: `${path.join(__dirname, 'src', 'webview', 'templates', `${basename}${extname}`)}`,
       publicPath: `vscode-resource:${path.resolve(__dirname, 'dist')}`
    }));
 }
@@ -41,7 +43,7 @@ const webview = {
          svelte: path.resolve('node_modules', 'svelte')
       },
       extensions: ['.mjs', '.ts', '.js', '.svelte'],
-      mainFields: ['svelte', 'browser', 'module', 'main'],
+      mainFields: ['svelte', 'browser', 'module', 'main']
    },
    plugins: [
       new miniCssExtractPlugin({
@@ -52,7 +54,7 @@ const webview = {
    module: {
       rules: [
          {
-            test: /\.(html|svelte)$/,
+            test: /\.svelte$/,
             exclude: /node_modules/,
             use: {
                loader: 'svelte-loader',
@@ -61,19 +63,29 @@ const webview = {
                      typescript({ tsconfigFile: './src/webview/tsconfig.json' }),
                      scss()
                   ],
-                  emitCss: true,
-               },
-            },
+                  emitCss: true
+               }
+            }
+         },
+         {
+            test: /\.html$/,
+            exclude: /node_modules/,
+            use: 'html-loader'
+         },
+         {
+            test: /\.ejs$/,
+            exclude: /node_modules/,
+            use: 'ejs-compiled-loader'
          },
          {
             test: /\.(css|s[ac]ss)$/i,
             exclude: /node_modules/,
-            use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
          },
          {
             test: /\.ts$/,
             exclude: /node_modules/,
-            use: 'ts-loader',
+            use: 'ts-loader'
          },
       ],
    },
