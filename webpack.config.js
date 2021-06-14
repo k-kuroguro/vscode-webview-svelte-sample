@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const miniCssExtractPlugin = require('mini-css-extract-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
+const cspHtmlWebpackPlugin = require('csp-html-webpack-plugin');
 const { typescript, scss } = require('svelte-preprocess');
 
 //TODO: recursively read
@@ -17,13 +18,35 @@ for (const template of templates) {
    const basename = path.basename(template.name, extname);
    if (!fs.existsSync(path.resolve(__dirname, 'src', 'webview', `${basename}.ts`))) continue;
    entry[basename] = `./${path.join('src', 'webview', `${basename}.ts`)}`;
-   htmlPlugins.push(new htmlWebpackPlugin({
-      title: '',
-      filename: `${basename}.html`,
-      chunks: [basename],
-      template: `${path.join(__dirname, 'src', 'webview', 'templates', `${basename}${extname}`)}`,
-      publicPath: `vscode-resource:${path.resolve(__dirname, 'dist')}`
-   }));
+   htmlPlugins.push(
+      new htmlWebpackPlugin({
+         title: '',
+         filename: `${basename}.html`,
+         chunks: [basename],
+         template: `${path.join(__dirname, 'src', 'webview', 'templates', `${basename}${extname}`)}`,
+         publicPath: `vscode-resource:${path.resolve(__dirname, 'dist')}`
+      }),
+      new cspHtmlWebpackPlugin(
+         {
+            'base-uri': "'self'",
+            'object-src': "'none'",
+            'default-src': "'none'",
+            'script-src': '${webview.cspSource}',
+            'img-src': ['${webview.cspSource}', 'https:'],
+            'style-src': '${webview.cspSource}'
+         },
+         {
+            hashEnabled: {
+               'script-src': true,
+               'style-src': true
+            },
+            nonceEnabled: {
+               'script-src': true,
+               'style-src': true
+            }
+         }
+      )
+   );
 }
 
 const webview = {

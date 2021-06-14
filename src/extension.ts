@@ -15,12 +15,12 @@ export function activate(context: vscode.ExtensionContext) {
                localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'dist'))]
             }
          );
-         panel.webview.html = getWebviewContent(context.extensionUri);
+         panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
       })
    );
 
-   function getWebviewContent(extensionUri: vscode.Uri): string {
-      return fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'counter.html')).toString('utf-8');
+   function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
+      return fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'counter.html')).toString('utf-8').replace(/\${webview.cspSource}/g, webview.cspSource);
    }
 
 }
