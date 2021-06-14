@@ -20,7 +20,11 @@ export function activate(context: vscode.ExtensionContext) {
    );
 
    function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
-      return fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'counter.html')).toString('utf-8').replace(/\${webview.cspSource}/g, webview.cspSource);
+      return replaceHtmlVars(fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'counter.html')).toString('utf-8'), webview, context.extensionPath);
+   }
+
+   function replaceHtmlVars(html: string, webview: vscode.Webview, extensionPath: string): string {
+      return html.replace(/\${webview.cspSource}/g, webview.cspSource).replace(/\${extensionDistPath}/g, path.join(extensionPath, 'dist'));
    }
 
 }

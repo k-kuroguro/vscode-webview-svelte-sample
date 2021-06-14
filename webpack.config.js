@@ -24,7 +24,7 @@ for (const template of templates) {
          filename: `${basename}.html`,
          chunks: [basename],
          template: `${path.join(__dirname, 'src', 'webview', 'templates', `${basename}${extname}`)}`,
-         publicPath: `vscode-resource:${path.resolve(__dirname, 'dist')}`
+         publicPath: 'vscode-resource:${extensionDistPath}'
       }),
       new cspHtmlWebpackPlugin(
          {
