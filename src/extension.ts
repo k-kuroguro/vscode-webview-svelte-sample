@@ -1,32 +1,10 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
+import { CounterPanel } from './webview';
 
 export function activate(context: vscode.ExtensionContext) {
-
    context.subscriptions.push(
-      vscode.commands.registerCommand('vscode-webview-svelte-sample.showCounter', () => {
-         const panel = vscode.window.createWebviewPanel(
-            'vscode-webview-svelte-sample.counter',
-            'Counter',
-            vscode.ViewColumn.One,
-            {
-               enableScripts: true,
-               localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'dist'))]
-            }
-         );
-         panel.webview.html = getWebviewContent(panel.webview, context.extensionUri);
-      })
+      ...CounterPanel.registerCommands(context.extensionUri)
    );
-
-   function getWebviewContent(webview: vscode.Webview, extensionUri: vscode.Uri): string {
-      return replaceHtmlVars(fs.readFileSync(path.join(extensionUri.fsPath, 'dist', 'counter.html')).toString('utf-8'), webview, context.extensionPath);
-   }
-
-   function replaceHtmlVars(html: string, webview: vscode.Webview, extensionPath: string): string {
-      return html.replace(/\${webview.cspSource}/g, webview.cspSource).replace(/\${extensionDistPath}/g, path.join(extensionPath, 'dist'));
-   }
-
 }
 
 export function deactivate() { }
