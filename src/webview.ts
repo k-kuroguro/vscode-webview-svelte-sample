@@ -18,6 +18,17 @@ export class CounterPanel {
       this._update();
 
       this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
+      this._panel.webview.onDidReceiveMessage(
+         message => {
+            switch (message.command) {
+               case 'close':
+                  this.dispose();
+                  return;
+            }
+         },
+         undefined,
+         this._disposables
+      );
    }
 
    public dispose() {
@@ -52,14 +63,6 @@ export class CounterPanel {
       CounterPanel.currentPanel = new CounterPanel(panel, extensionUri);
    }
 
-   public static registerCommands(extensionUri: vscode.Uri): vscode.Disposable[] {
-      return [
-         vscode.commands.registerCommand('vscode-webview-svelte-sample.showCounter', () => {
-            CounterPanel.createOrShow(extensionUri);
-         })
-      ];
-   }
-
    private _update() {
       this._panel.webview.html = this.getWebviewContent(this._panel.webview, this._extensionUri);
    }
@@ -73,5 +76,24 @@ export class CounterPanel {
          .replace(/\${webview.cspSource}/g, webview.cspSource)
          .replace(/\${webviewDistPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist'))).toString());
    }
+
+   //#region commands
+
+   public static registerCommands(extensionUri: vscode.Uri): vscode.Disposable[] {
+      return [
+         vscode.commands.registerCommand('vscode-webview-svelte-sample.counter.show', () => {
+            CounterPanel.createOrShow(extensionUri);
+         }),
+         vscode.commands.registerCommand('vscode-webview-svelte-sample.counter.increment', () => {
+            CounterPanel.increment();
+         })
+      ];
+   }
+
+   private static increment(): void {
+      this.currentPanel?._panel.webview.postMessage({ command: 'increment' });
+   }
+
+   //#endregion
 
 }

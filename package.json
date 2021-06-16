@@ -10,14 +10,19 @@
       "Other"
    ],
    "activationEvents": [
-      "onCommand:vscode-webview-svelte-sample.showCounter"
+      "onCommand:vscode-webview-svelte-sample.counter.show",
+      "onCommand:vscode-webview-svelte-sample.counter.increment"
    ],
    "main": "./dist/extension.js",
    "contributes": {
       "commands": [
          {
-            "command": "vscode-webview-svelte-sample.showCounter",
+            "command": "vscode-webview-svelte-sample.counter.show",
             "title": "Webview Svelte Sample: Show Counter"
+         },
+         {
+            "command": "vscode-webview-svelte-sample.counter.increment",
+            "title": "Webview Svelte Sample: Increment Counter"
          }
       ]
    },
