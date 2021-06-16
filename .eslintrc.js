@@ -6,16 +6,7 @@ module.exports = {
       sourceType: 'module'
    },
    plugins: [
-      'svelte3',
       '@typescript-eslint'
-   ],
-   overrides: [
-      {
-         files: [
-            '**/*.svelte'
-         ],
-         processor: 'svelte3/svelte3'
-      }
    ],
    rules: {
       '@typescript-eslint/naming-convention': [
@@ -66,9 +57,5 @@ module.exports = {
    ignorePatterns: [
       '**/*.d.ts',
       '*.config.js'
-   ],
-   settings: {
-      'svelte3/typescript': require('typescript'),
-      'svelte3/ignore-styles': () => true
-   }
+   ]
 };
