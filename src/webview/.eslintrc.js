@@ -10,7 +10,14 @@ module.exports = {
          processor: 'svelte3/svelte3'
       }
    ],
-   rules: {},
+   rules: {
+      '@typescript-eslint/consistent-type-imports': [
+         'error',
+         {
+            prefer: 'type-imports'
+         },
+      ]
+   },
    settings: {
       'svelte3/typescript': require('typescript'),
       'svelte3/ignore-styles': () => true
