@@ -16,8 +16,15 @@ const entry = {}, htmlPlugins = [];
 for (const template of templates) {
    const extname = path.extname(template.name);
    const basename = path.basename(template.name, extname);
-   if (!fs.existsSync(path.resolve(__dirname, 'src', 'webview', `${basename}.ts`))) continue;
-   entry[basename] = `./${path.join('src', 'webview', `${basename}.ts`)}`;
+
+   //get ts file path for entry
+   let tsPath = path.join('src', 'webview', `${basename}.ts`);
+   if (!fs.existsSync(path.resolve(__dirname, tsPath))) {
+      tsPath = path.join('src', 'webview', basename, 'index.ts');
+      if (!fs.existsSync(path.resolve(__dirname, tsPath))) continue;
+   }
+
+   entry[basename] = `./${tsPath}`;
    htmlPlugins.push(
       new htmlWebpackPlugin({
          title: '',
