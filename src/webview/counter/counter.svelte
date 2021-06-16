@@ -1,17 +1,21 @@
 <script lang="ts">
    import { onMount, setContext } from 'svelte';
-   export let vscode;
+   import type { WebviewApi } from 'vscode-webview';
+   type State = { count: number };
+
+   export let vscode: WebviewApi<State>;
    setContext('vscode', vscode);
 
    onMount(() => {});
 
-   let count: number = 0;
+   let count: number = vscode.getState()?.count ?? 0;
 
    window.addEventListener('message', (event) => {
       const message = event.data;
       switch (message.command) {
          case 'increment':
             count++;
+            vscode.setState({ count });
             break;
       }
    });

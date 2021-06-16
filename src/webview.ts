@@ -2,6 +2,8 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+
+
 export class CounterPanel {
 
    public static currentPanel?: CounterPanel;
@@ -54,13 +56,21 @@ export class CounterPanel {
          CounterPanel.viewType,
          'Counter',
          column || vscode.ViewColumn.One,
-         {
-            enableScripts: true,
-            localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'dist')]
-         }
+         CounterPanel.getWebviewOptions(extensionUri)
       );
 
       CounterPanel.currentPanel = new CounterPanel(panel, extensionUri);
+   }
+
+   private static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+      CounterPanel.currentPanel = new CounterPanel(panel, extensionUri);
+   }
+
+   private static getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
+      return {
+         enableScripts: true,
+         localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'dist')]
+      };
    }
 
    private _update() {
@@ -75,6 +85,18 @@ export class CounterPanel {
       return html
          .replace(/\${webview.cspSource}/g, webview.cspSource)
          .replace(/\${webviewDistPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist'))).toString());
+   }
+
+   public static registerSerializer(extensionUri: vscode.Uri): vscode.Disposable {
+      if (vscode.window.registerWebviewPanelSerializer) {
+         return vscode.window.registerWebviewPanelSerializer(CounterPanel.viewType, {
+            async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
+               webviewPanel.webview.options = CounterPanel.getWebviewOptions(extensionUri);
+               CounterPanel.revive(webviewPanel, extensionUri);
+            }
+         });
+      }
+      return { dispose: () => { } };
    }
 
    //#region commands
