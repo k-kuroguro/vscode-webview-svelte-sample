@@ -69,7 +69,9 @@ export class CounterPanel {
    }
 
    private replaceHtmlVars(html: string, webview: vscode.Webview, extensionPath: string): string {
-      return html.replace(/\${webview.cspSource}/g, webview.cspSource).replace(/\${extensionDistPath}/g, path.join(extensionPath, 'dist'));
+      return html
+         .replace(/\${webview.cspSource}/g, webview.cspSource)
+         .replace(/\${webviewDistPath}/g, webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'dist'))).toString());
    }
 
 }
