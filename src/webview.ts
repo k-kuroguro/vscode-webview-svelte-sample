@@ -2,9 +2,26 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+export class Webview {
 
+   private readonly disposables: vscode.Disposable[] = [];
 
-export class CounterPanel {
+   constructor(extensionUri: vscode.Uri) {
+      this.disposables.push(
+         ...CounterPanel.registerCommands(extensionUri),
+         CounterPanel.registerSerializer(extensionUri)
+      );
+   }
+
+   public dispose(): void {
+      for (const disposable of this.disposables) {
+         disposable.dispose();
+      }
+   }
+
+}
+
+class CounterPanel {
 
    public static currentPanel?: CounterPanel;
    public static readonly viewType = 'vscode-webview-svelte-sample.counter';
