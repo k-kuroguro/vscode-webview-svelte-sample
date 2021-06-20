@@ -85,7 +85,7 @@ const webview = {
       rules: [
          {
             test: /\.svelte$/,
-            exclude: /node_modules/,
+            exclude: /node_modules(?!(\/|\\)(sveltestrap))/,
             use: {
                loader: 'svelte-loader',
                options: {
@@ -109,7 +109,7 @@ const webview = {
          },
          {
             test: /\.(css|s[ac]ss)$/i,
-            exclude: /node_modules/,
+            exclude: /node_modules(?!(\/|\\)(bootstrap|sveltestrap))/,
             use: [miniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
          },
          {

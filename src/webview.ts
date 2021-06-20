@@ -125,12 +125,26 @@ class CounterPanel {
          }),
          vscode.commands.registerCommand('vscode-webview-svelte-sample.counter.increment', () => {
             CounterPanel.increment();
+         }),
+         vscode.commands.registerCommand('vscode-webview-svelte-sample.counter.decrement', () => {
+            CounterPanel.decrement();
+         }),
+         vscode.commands.registerCommand('vscode-webview-svelte-sample.counter.reset', () => {
+            CounterPanel.reset();
          })
       ];
    }
 
    private static increment(): void {
       this.currentPanel?._panel.webview.postMessage({ command: 'increment' });
+   }
+
+   private static decrement(): void {
+      this.currentPanel?._panel.webview.postMessage({ command: 'decrement' });
+   }
+
+   private static reset(): void {
+      this.currentPanel?._panel.webview.postMessage({ command: 'reset' });
    }
 
    //#endregion

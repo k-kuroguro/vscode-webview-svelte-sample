@@ -1,8 +1,39 @@
-div {
-   .vscode-dark {
-      color: white;
+html,
+body,
+#app {
+   width: 100%;
+   height: 100%;
+   margin: 0;
+   padding: 0;
+   background-color: var(--vscode-editor-background);
+   font-family: var(--vscode-font-family);
+   color: var(--vscode-editor-foreground);
+}
+
+.btn {
+   font-weight: var(--vscode-font-weight);
+   font-size: var(--vscode-font-size);
+   &.btn-primary {
+      border-color: var(--vscode-button-background);
+      background-color: var(--vscode-button-background);
+      &:hover,
+      &:focus {
+         background-color: var(--vscode-button-hoverBackground);
+      }
    }
-   .vscode-light {
-      color: black;
+   &.btn-secondary {
+      border-color: var(--vscode-button-secondaryBackground);
+      background-color: var(--vscode-button-secondaryBackground);
+      &:hover,
+      &:focus {
+         background-color: var(--vscode-button-secondaryHoverBackground);
+      }
+   }
+   &.vscode-high-contrast {
+      border-color: var(--vscode-contrastBorder);
+      &:hover,
+      &:focus {
+         border-color: var(--vscode-contrastActiveBorder);
+      }
    }
 }

@@ -2,7 +2,8 @@
    "compilerOptions": {
       "types": [
          "svelte",
-         "vscode-webview"
+         "vscode-webview",
+         "sveltestrap"
       ],
       "target": "es6",
       "moduleResolution": "node",
