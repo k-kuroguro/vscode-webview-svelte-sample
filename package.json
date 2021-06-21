@@ -6,6 +6,12 @@
    "engines": {
       "vscode": "^1.57.0"
    },
+   "license": "MIT",
+   "homepage": "https://github.com/k-kuroguro/vscode-webview-svelte-sample/blob/master/README.md",
+   "repository": {
+      "type": "git",
+      "url": "https://github.com/k-kuroguro/vscode-webview-svelte-sample.git"
+   },
    "categories": [
       "Other"
    ],
