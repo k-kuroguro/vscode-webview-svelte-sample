@@ -35,16 +35,14 @@
    }
 
    const messageMap = {
-      increment: increment,
-      decrement: decrement,
-      reset: reset,
+      increment,
+      decrement,
+      reset,
    };
 
    window.addEventListener('message', (event) => {
       const message = event.data;
-      if (messageMap[message.command]) {
-         messageMap[message.command]();
-      }
+      messageMap[message.command] && messageMap[message.command]();
    });
 </script>
 
