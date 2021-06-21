@@ -48,6 +48,11 @@ class CounterPanel {
          undefined,
          this._disposables
       );
+
+      this._panel.iconPath = {
+         light: vscode.Uri.joinPath(extensionUri, 'resources', 'light', 'counter.svg'),
+         dark: vscode.Uri.joinPath(extensionUri, 'resources', 'dark', 'counter.svg')
+      };
    }
 
    public dispose() {
