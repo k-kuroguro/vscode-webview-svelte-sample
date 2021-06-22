@@ -27,19 +27,23 @@
       "commands": [
          {
             "command": "vscode-webview-svelte-sample.counter.show",
-            "title": "Webview Svelte Sample: Show Counter"
+            "category": "Webview Svelte Sample",
+            "title": "Show Counter"
          },
          {
             "command": "vscode-webview-svelte-sample.counter.increment",
-            "title": "Webview Svelte Sample: Increment Counter"
+            "category": "Webview Svelte Sample",
+            "title": "Increment Counter"
          },
          {
             "command": "vscode-webview-svelte-sample.counter.decrement",
-            "title": "Webview Svelte Sample: Decrement Counter"
+            "category": "Webview Svelte Sample",
+            "title": "Decrement Counter"
          },
          {
             "command": "vscode-webview-svelte-sample.counter.reset",
-            "title": "Webview Svelte Sample: Reset Counter"
+            "category": "Webview Svelte Sample",
+            "title": "Reset Counter"
          }
       ]
    },
